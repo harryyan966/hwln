@@ -1,0 +1,18 @@
+{
+	"pages": [
+		{ "path": "pages/index/index" },
+		{ "path": "pages/register/register" },
+		{ "path": "pages/menu/menu" },
+		{ "path": "pages/write/write" },
+		{ "path": "pages/view/view" },
+		{ "path": "pages/cview/cview" },
+		{ "path": "pages/cdetail/cdetail" },
+		{ "path": "pages/ctransfer/ctransfer" },
+		{ "path": "pages/ccreate/ccreate" },
+		{ "path": "pages/settings/settings" }
+    ],
+	"globalStyle": {
+		"navigationStyle": "custom"
+	},
+	"uniIdRouter": {}
+}

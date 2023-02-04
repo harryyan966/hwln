@@ -1,0 +1,42 @@
+// variables
+$primary: #4dabbb;
+
+$accent-1: #81234a;
+$accent-2: #9949ae;
+$accent-3: #46589b;
+
+$warning: #f26ca7;
+$gray: #eef0f5;
+$dark-gray: #4c4878;
+$shadow: #a6b4c8;
+
+$shadow-delta: 12rpx;
+$shadow-size: 20rpx;
+
+// shadowed buttons
+.btn {
+    padding: 20rpx 40rpx;
+    transform: translateY(-20rpx);
+    border-radius: 30rpx;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: $shadow-delta $shadow-delta $shadow-size $shadow,
+                (-$shadow-delta) (-$shadow-delta) $shadow-size white;
+    background: none;
+    outline: none;
+
+    font-size: 50rpx;
+    font-weight: bold;
+}
+
+// color classes
+.primary { color: $primary; } .acc1 { color: $accent-1; } .acc2 { color: $accent-2; } .acc3 { color: $accent-3; } .warning { color: $warning; } .dgray { color: $dark-gray; }
+
+.title {
+    font-weight: bold;
+    font-size: 80rpx;
+    text-align: center;
+}

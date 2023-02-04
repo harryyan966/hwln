@@ -1,0 +1,28 @@
+@import '@/static/global.scss';
+
+.container {
+	margin: 50rpx;
+	text-align: center;
+}
+
+.f-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	height: 100rpx;
+	width: 650rpx;
+	padding-right: 20rpx;
+	margin-bottom: 20rpx;
+}
+
+.icon {
+	 max-height: 80rpx;
+	 max-width: 80rpx;
+}
+
+.warning {
+	color: $warning;
+	font-weight: bold;
+	margin: auto;
+}

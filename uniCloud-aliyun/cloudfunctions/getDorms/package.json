@@ -1,0 +1,7 @@
+{
+  "name": "getDorms",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

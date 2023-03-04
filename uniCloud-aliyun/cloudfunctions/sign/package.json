@@ -1,5 +1,5 @@
 {
-  "name": "getUsers",
+  "name": "sign",
   "dependencies": {
     "wx-common": "file:../common/wx-common"
   },

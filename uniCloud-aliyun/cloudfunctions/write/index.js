@@ -19,12 +19,10 @@ exports.main = async (event, context) => {
 		}
 	}
 	event.dorms = dorms.join("，");
-	let token = event.token
 	delete event.token
 
 	await db.collection("xNotes").add(event)
 	
 	return {
-		token: token
 	}
 };

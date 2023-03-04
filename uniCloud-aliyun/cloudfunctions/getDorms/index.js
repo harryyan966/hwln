@@ -15,7 +15,6 @@ exports.main = async (event, context) => {
 	}
 
 	return {
-		token: event.token,
 		data: {
 			rooms: rooms,
 			halls: halls

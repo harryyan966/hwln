@@ -225,10 +225,6 @@
 <style lang="scss">
 	@import "@/static/global.scss";
 
-	.title {
-		margin-top: 250rpx;
-	}
-	
 	.container {
 		margin-top: 100rpx;
 	}

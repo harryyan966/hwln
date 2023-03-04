@@ -20,7 +20,9 @@ exports.main = async (event, context) => {
 	else {
 		if (data.length != 0) {
 			if (event.field == "all") {
-
+				for (let d of data) {
+					delete d.openid
+				}
 			}
 			else if (data[0][event.field]) {
 				data = data.map(e => e[event.field])
@@ -34,7 +36,6 @@ exports.main = async (event, context) => {
 	}
 
 	return {
-		token: event.token,
 		data: data
 	}
 };

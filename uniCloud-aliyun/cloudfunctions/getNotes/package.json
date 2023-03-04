@@ -1,5 +1,5 @@
 {
-  "name": "getUsers",
+  "name": "getNotes",
   "dependencies": {
     "wx-common": "file:../common/wx-common"
   },

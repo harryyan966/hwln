@@ -19,7 +19,6 @@
 	@import '@/static/global.scss';
 
 	.title {
-		margin-top: 250rpx;
 		margin-bottom: 100rpx;
 	}
 

@@ -9,7 +9,6 @@ exports.main = async (event, context) => {
 
 	if (!raw) {
 		return {
-			token: event.token,
 			data: {
 				err: "cannot get classes"
 			}
@@ -97,7 +96,6 @@ exports.main = async (event, context) => {
 	}
 
 	return {
-		token: event.token,
 		data: data
 	}
 };

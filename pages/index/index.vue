@@ -52,7 +52,7 @@
 	@import '@/static/global.scss';
 
 	.container {
-		margin-top: 500rpx;
+		margin-top: 250rpx;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

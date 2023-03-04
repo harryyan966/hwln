@@ -5,6 +5,7 @@
 		{ "path": "pages/menu/menu" },
 		{ "path": "pages/write/write" },
 		{ "path": "pages/view/view" },
+		{ "path": "pages/ndetail/ndetail" },
 		{ "path": "pages/cview/cview" },
 		{ "path": "pages/cdetail/cdetail" },
 		{ "path": "pages/ctransfer/ctransfer" },

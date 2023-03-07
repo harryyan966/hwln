@@ -3,18 +3,17 @@
 		<back></back>
 		<view class="title acc1">写假条</view>
 		
-		<view class="container">
+		<view v-if="cnames ? cnames.length == 0 : false" class="twarn warning">*只有加入了班级才能填写假条哦</view>
+		<view v-else class="container">
 			<!-- the class of the students requesting the leave -->
 			<SelectInput
-			icon="class-a1.svg"
+			icon="symbols/a1-class.svg"
 			placeholder="班级"
 			color="a1"
 			@change="e => { noteInfo.class = e; warnings.class = ''; noteInfo.students = [] }"
 			:options="cnames"
 			:warning="warnings.class"
 			/>
-
-			<view class="warning" style="text-align: center;" v-show="cnames ? cnames.length==0 : false">*只有加入了班级才能填写假条哦</view>
 
 			<!-- ask for the students requesting the leave -->
 			<CheckboxInput
@@ -26,7 +25,7 @@
 
 			<!-- ask for date -->
 			<SelectInput
-			icon="date-a1.svg"
+			icon="symbols/a1-date.svg"
 			placeholder="日期"
 			color="a1"
 			@change="e => { noteInfo.date = e; warnings.date = '' }"
@@ -36,7 +35,7 @@
 
 			<!-- ask for supervisor -->
 			<SelectInput
-			icon="teacher-a1.svg"
+			icon="symbols/a1-teacher.svg"
 			placeholder="指导老师"
 			color="a1"
 			@change="e => { noteInfo.supervisor = e; warnings.supervisor = '' }"
@@ -46,7 +45,7 @@
 
 			<!-- ask for message and reason -->
 			<TextInput
-			icon="message-a1.svg"
+			icon="symbols/a1-message.svg"
 			placeholder="请假事由"
 			@change="e => { noteInfo.message = e; warnings.message = '' }"
 			:warning="warnings.message"
@@ -97,6 +96,13 @@
 							identity: res.data
 						},
 						success: (res) => {
+							if (res.result.err) {
+		                		uni.showToast({
+		                			icon: "error",
+		                			title: "error: " + res.result.err
+		                		})
+		                		return
+		                	}
 							this.classes = res.result.data.classes
 							this.cnames = res.result.data.cnames
 						}
@@ -111,6 +117,13 @@
 					field: "name"
 				},
 				success: (res) => {
+					if (res.result.err) {
+                		uni.showToast({
+                			icon: "error",
+                			title: "error: " + res.result.err
+                		})
+                		return
+                	}
 					this.teachers = res.result.data
 				}
 			})
@@ -203,14 +216,20 @@
 						sclass: false
 					},
 					success: (res) => {
-						console.log(res)
+						if (res.result.err) {
+	                		uni.showToast({
+	                			icon: "error",
+	                			title: "error: " + res.result.err
+	                		})
+	                		return
+	                	}
 						uni.showModal({
 							showCancel: false,
 							title: "提交成功",
 							success: (res) => {
 								if (res.confirm) {
-									uni.reLaunch({
-										url: "/pages/menu/menu"
+									uni.navigateBack({
+										delta: 1
 									})
 								}
 							}

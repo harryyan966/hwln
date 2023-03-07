@@ -5,7 +5,8 @@
 		
 		<!-- display notes -->
 		<view class="container">
-			<view v-for="note, index in notes" :key="index" class="btn" 
+			<view v-if="notes ? notes.length == 0 : false" class="twarn warning">没有与您相关的假条哦</view>
+			<view v-else v-for="note, index in notes" :key="index" class="btn" 
 			:class="{ signed: note.ssuper && note.sclass }" @click="detail(index)">
 				
 				<view class="info acc2">
@@ -50,6 +51,13 @@
 								})
 								return
 							}
+							if (res.result.err) {
+		                		uni.showToast({
+		                			icon: "error",
+		                			title: "error: " + res.result.err
+		                		})
+		                		return
+		                	}
 							console.log(res)
 							this.notes = res.result.notes
 						},
@@ -87,8 +95,6 @@
 
 <style lang="scss">
 	@import "@/static/global.scss";
-
-	.title { margin-top: 250rpx; }
 
 	.container {
 		margin-top: 100rpx;

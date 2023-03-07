@@ -5,7 +5,7 @@
 
 		<!-- ask for real name -->
 		<TextInput
-		icon="user-p.svg"
+		icon="symbols/p-user.svg"
 		placeholder="真实姓名(让大家认识你)"
 		@change="e => { usrInfo.name = e; warnings.name = '' }"
 		:warning="warnings.name"
@@ -13,7 +13,7 @@
 
 		<!-- ask for identity -->
 		<SelectInput
-		icon="identity-p.svg"
+		icon="symbols/p-identity.svg"
 		placeholder="您的身份？"
 		@change="e => { usrInfo.identity = e; warnings.identity= '' }"
 		:options="['教师', '学生']"
@@ -23,7 +23,7 @@
 		<!-- require teacher key to register as a teacher -->
 		<TextInput
 		v-show="usrInfo.identity == 0"
-		icon="teacher-key-p.svg"
+		icon="symbols/p-tkey.svg"
 		placeholder="「 teacher key 」"
 		@change="e => { teacherKey = e; warnings.teacherKey = '' }"
 		:warning="warnings.teacherKey"
@@ -32,7 +32,7 @@
 		<!-- ask for dorm hall from students -->
 		<SelectInput
 		v-show="usrInfo.identity == 1"
-		icon="dorm-p.svg"
+		icon="symbols/p-dorm.svg"
 		placeholder="您的宿舍楼？"
 		@change="e => { usrInfo.hall = e; usrInfo.room = '-1'; warnings.hall = '' }"
 		:options="halls"
@@ -43,14 +43,14 @@
 		<SelectInput
 		v-show="usrInfo.identity == 1 && usrInfo.hall != -1"
 		placeholder="您的房间？"
-		icon="room-p.svg"
+		icon="symbols/p-room.svg"
 		@change="e => { usrInfo.room = e; warnings.room = '' }"
 		:options="rooms[halls[usrInfo.hall]]"
 		:warning="warnings.room"
 		/>
 
 		<!-- submit button -->
-		<view class="btn" @click="register">注册</view>
+		<view class="btn" style="transform: translateY(50rpx);" @click="register">注册</view>
 
 	</view>
 </template>
@@ -85,6 +85,13 @@
 			cloudApi.call({
 				name: "getDorms",
 				success: (res) => {
+					if (res.result.err) {
+                		uni.showToast({
+                			icon: "error",
+                			title: "error: " + res.result.err
+                		})
+                		return
+                	}
 					this.halls = res.result.data.halls
 					this.rooms = res.result.data.rooms
 					console.log(this.halls)
@@ -107,8 +114,15 @@
 						field: "name"
 					},
 					success: (res) => {
+						if (res.result.err) {
+	                		uni.showToast({
+	                			icon: "error",
+	                			title: "error: " + res.result.err
+	                		})
+	                		return
+	                	}
 						console.log(res.result)
-						duplicate = res.result.data.find(e => e.name == this.usrInfo.name) != undefined
+						duplicate = res.result.data.find(e => e == this.usrInfo.name) != undefined
 					}
 				})
 				return duplicate;
@@ -187,27 +201,45 @@
 					      			title: '要以此身份注册海外假条吗？',
 									success: (res) => {
 										if (res.confirm) {
-											// add user to database
-											cloudApi.call({
-												name: "register",
-												data: {
-													dorm: dorm,
-													identity: this.usrInfo.identity,
-													name: this.usrInfo.name
-												},
+											uni.login({
+												provider: "weixin",
 												success: (res) => {
-													uni.setStorage({
-														key: "identity",
-														data: this.usrInfo.identity == 0 ? "teacher" : "student"
-													})
-													uni.reLaunch({
-														url: '/pages/menu/menu'
-													});
-												},
-												fail: (err) => {
-													uni.showToast({
-														icon: "none",
-														title: "注册发生错误"
+													let code = res.code
+													// add user to database
+													cloudApi.call({
+														name: "register",
+														data: {
+															dorm: dorm,
+															identity: this.usrInfo.identity,
+															name: this.usrInfo.name,
+															code: code
+														},
+														success: (res) => {
+															if (res.result.err) {
+										                		uni.showToast({
+										                			icon: "error",
+										                			title: "error: " + res.result.err
+										                		})
+										                		return
+										                	}
+															uni.setStorage({
+																key: "identity",
+																data: this.usrInfo.identity == 0 ? "teacher" : "student"
+															})
+															uni.setStorage({
+																key: "name",
+																data: res.result.userInfo.name
+															})
+															uni.reLaunch({
+																url: '/pages/menu/menu'
+															});
+														},
+														fail: (err) => {
+															uni.showToast({
+																icon: "none",
+																title: "注册发生错误"
+															})
+														}
 													})
 												}
 											})

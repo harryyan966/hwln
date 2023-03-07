@@ -36,8 +36,21 @@ $shadow-size: 20rpx;
 .primary { color: $primary; } .acc1 { color: $accent-1; } .acc2 { color: $accent-2; } .acc3 { color: $accent-3; } .warning { color: $warning; } .dgray { color: $dark-gray; }
 
 .title {
+    margin: auto;
     margin-top: 250rpx;
     font-weight: bold;
     font-size: 80rpx;
     text-align: center;
+    width: 400rpx;
+    word-wrap: break-word;
+}
+
+.twarn {
+    height: 50vh;
+    width: 100%;
+    font-size: 40rpx;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -35,7 +35,7 @@
 				return this.index == -1 ? 'grey' : 'black';
 			},
 			dropdownSrc() {
-				return `/static/icons/dropdown-${this.color || "p"}.svg`;
+				return `/static/icons/dropdowns/${this.color || "p"}.svg`;
 			}
 		}
 	}

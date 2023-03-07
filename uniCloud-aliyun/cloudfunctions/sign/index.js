@@ -11,39 +11,29 @@ exports.main = async (event, context) => {
 	let notes = (await db.collection("xNotes").get()).data
 	let note = notes.find( e => e._id == event.id )
 
-	if (!note) {
-		return {
-			err: "nonexistent note"
-		}
-	}
+	if (!note)
+		return { err: "nonexistent note" }
 
 	let teachers = (await db.collection("teachers").get()).data
 	let me = teachers.find( e => e.openid == openid )
 	console.log(teachers)
 	console.log(me)
 
-	if (!me) {
-		return {
-			err: "not authorized"
-		}
-	}
+	if (!me)
+		return { err: "not authorized" }
 
 	if (event.type == "super" && me.name == note.supervisor) {
 		await db.collection("xNotes").doc(note._id).update({
 			ssuper: !note.ssuper
 		})
-		return {
-		}
+		return {}
 	}
 	if (event.type == "class" && me.name == note.homeroom) {
 		await db.collection("xNotes").doc(note._id).update({
 			sclass: !note.sclass
 		})
-		return {
-		}
+		return {}
 	}
 
-	return {
-		err: "not authorized"
-	}
+	return { err: "not authorized" }
 };

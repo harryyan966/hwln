@@ -21,28 +21,21 @@ exports.main = async (event, context) => {
 		openid = res.data.openid;
 	}
 
-	// initialize table
-	const students = db.collection("students");
-	const teachers = db.collection("teachers");
 	// get user data
-	let userInfo;
 	let identity = undefined;
 
-	userInfo = await students.where({
-		openid: openid
-	}).get();
+	let userInfo = (await db.collection("students").where({ openid: openid }).get()).data;
+	console.log(userInfo)
 
-	if (userInfo.data.length != 0) {
-		userInfo = userInfo.data[0];
+	if (userInfo.length > 0) {
+		userInfo = userInfo[0];
 		identity = "student"
 	}
 	else {
-		userInfo = await teachers.where({
-			openid: openid
-		}).get();
+		userInfo = (await db.collection("teachers").where({ openid: openid }).get()).data;
 
-		if (userInfo.data.length != 0) {
-			userInfo = userInfo.data[0];
+		if (userInfo.length > 0) {
+			userInfo = userInfo[0];
 			identity = "teacher"
 		}
 		else userInfo = undefined
@@ -52,7 +45,7 @@ exports.main = async (event, context) => {
 		// prevent openid from being visible in the front-end
 		delete userInfo.openid
 	}
-	
+
 	// return the jwt, or encrypted openid available for a certain period of time
 	const token = common.getToken(openid);
 

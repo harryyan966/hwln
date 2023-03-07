@@ -7,13 +7,8 @@ exports.main = async (event, context) => {
 	let raw = (await db.collection("xClasses").get()).data
 	let data
 
-	if (!raw) {
-		return {
-			data: {
-				err: "cannot get classes"
-			}
-		}
-	}
+	if (!raw)
+		return { err: "cannot get classes" }
 	
 	if (event.query == "write") {
 
@@ -32,13 +27,14 @@ exports.main = async (event, context) => {
 				if (event.token) openid = common.verifyToken(event.token)
 				else return { err: "user not logged in" }
 
-				console.log("identity:")
-				console.log(event.identity)
-				let me = (await db.collection("students").where({
-					openid: openid
-				}).get()).data[0]
+				let me = (await db.collection("students").where({ openid: openid }).get()).data
+				if (me.length == 0)
+					return { err: "user does not exist" }
+				else
+					me = me[0]
 
 				raw = raw.find(e => e.students.includes(me.name))
+				console.log(raw)
 				if (raw) {
 					classes[raw.name] = raw.students
 					cnames[0] = raw.name
@@ -78,11 +74,17 @@ exports.main = async (event, context) => {
 		let me = (await db.collection(event.identity + "s").where({
 			openid: openid
 		}).get()).data
+		if (me.length == 0)
+			return { err: "user does not exist" }
+		else
+			me = me[0]
+		console.log(me)
 
 		let cnow = raw.find(e => e.name == event.cname)
 		let isRelated = true
+		console.log(cnow)
 
-		if (event.identity == "student" && !cnow.students.includes(me.name)) {
+		if (event.identity == "student" && !cnow.students.includes(me.name) && !cnow.pending.includes(me.name)) {
 			isRelated = false
 		}
 		if (event.identity == "teacher" && cnow.teacher != me.name) {

@@ -8,37 +8,37 @@
 			<view class="btn" @click="sign('class')" :class="{ clicked: note.sclass }">{{ note.homeroom }}老师{{ note.sclass ? "已签字！" : "请点击此处签字" }}</view>
 
 			<view class="description">
-				<img src="/static/icons/people-a2.svg" class="dimg">
+				<img src="/static/icons/symbols/a2-people.svg" class="dimg">
 				<view class="dtext">请假学生</view>
 			</view>
 			<view class="btn content">{{ note.students }}</view>
 
 			<view class="description">
-				<img src="/static/icons/date-a2.svg" class="dimg">
+				<img src="/static/icons/symbols/a2-date.svg" class="dimg">
 				<view class="dtext">请假日期</view>
 			</view>
 			<view class="btn content">{{ note.date }}</view>
 
 			<view class="description">
-				<img src="/static/icons/message-a2.svg" class="dimg">
+				<img src="/static/icons/symbols/a2-message.svg" class="dimg">
 				<view class="dtext">请假事由</view>
 			</view>
 			<view class="btn content">{{ note.message }}</view>
 
 			<view class="description">
-				<img src="/static/icons/room-a2.svg" class="dimg">
+				<img src="/static/icons/symbols/a2-room.svg" class="dimg">
 				<view class="dtext">学生宿舍</view>
 			</view>
 			<view class="btn content">{{ note.dorms }}</view>
 
 			<view class="description">
-				<img src="/static/icons/teacher-a2.svg" class="dimg">
+				<img src="/static/icons/symbols/a2-teacher.svg" class="dimg">
 				<view class="dtext">指导老师</view>
 			</view>
 			<view class="btn content">{{ note.supervisor }}老师</view>
 
 			<view class="description">
-				<img src="/static/icons/teacher-a2.svg" class="dimg">
+				<img src="/static/icons/symbols/a2-teacher.svg" class="dimg">
 				<view class="dtext">班主任老师</view>
 			</view>
 			<view class="btn content">{{ note.homeroom }}老师</view>
@@ -97,6 +97,13 @@
 							})
 							return
 						}
+						if (res.result.err) {
+	                		uni.showToast({
+	                			icon: "error",
+	                			title: "error: " + res.result.err
+	                		})
+	                		return
+	                	}
 						if (type == "super") this.note.ssuper = !this.note.ssuper
 						if (type == "class") this.note.sclass = !this.note.sclass
 					}
@@ -128,6 +135,7 @@
 	}
 
 	.dimg {
+		margin-top: -10rpx;
 		max-width: 70rpx;
 		max-height: 70rpx;
 		margin-right: 50rpx;

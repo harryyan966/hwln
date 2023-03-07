@@ -3,20 +3,14 @@
 const db = uniCloud.database()
 
 exports.main = async (event, context) => {
-	let data
+	if (event.type != "student" && event.type != "teacher")
+		return { err: "cannot get specified user list" }
 
-	if (event.type == "student") {
-		data = (await db.collection("students").get()).data
-	}
-	else if (event.type == "teacher") {
-		data = (await db.collection("teachers").get()).data
-	}
+	let data = (await db.collection(event.type + "s").get()).data
+	
+	if (!data)
+		return { err: "cannot get specified user list" }
 
-	if (!data) {
-		data = {
-			err: "cannot get specified user list"
-		}
-	}
 	else {
 		if (data.length != 0) {
 			if (event.field == "all") {
@@ -28,9 +22,7 @@ exports.main = async (event, context) => {
 				data = data.map(e => e[event.field])
 			}
 			else {
-				data = {
-					err: "specified field does not exist"
-				}
+				return { err: "specified field does not exist" }
 			}
 		}
 	}

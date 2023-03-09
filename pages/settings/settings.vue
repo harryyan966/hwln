@@ -9,6 +9,7 @@
 				<view class="dtext">个人信息</view>
 			</view>
 			<view class="btn">{{ name }}({{ identity == "teacher" ? "老师" : "学生" }})</view>
+			<view v-if="dorm" class="btn">{{ dorm }}</view>
 
 			<!-- change dorm -->
 			<view v-if="identity == 'student'" class="description">
@@ -57,6 +58,7 @@
 			return {
 				name: "",
 				identity: "",
+				dorm: undefined,
 				// change dorm
 				halls: undefined,
 				rooms: undefined,
@@ -86,15 +88,11 @@
 				}
 			})
 			uni.getStorage({
-				key: "identity",
+				key: "me",
 				success: (res) => {
-					this.identity = res.data
-				}
-			})
-			uni.getStorage({
-				key: "name",
-				success: (res) => {
-					this.name = res.data
+					this.identity = res.data.identity
+					this.name = res.data.name
+					this.dorm = res.data.dorm
 				}
 			})
 		},
@@ -129,10 +127,11 @@
 									if (res.result.err) {
 				                		uni.showToast({
 				                			icon: "error",
-				                			title: "error: " + res.result.err
+				                			title: res.result.err
 				                		})
 				                		return
 				                	}
+				                	this.dorm = dorm
 									uni.showToast({
 										icon: "none",
 										title: "宿舍更改成功"

@@ -223,12 +223,8 @@
 										                		return
 										                	}
 															uni.setStorage({
-																key: "identity",
-																data: this.usrInfo.identity == 0 ? "teacher" : "student"
-															})
-															uni.setStorage({
-																key: "name",
-																data: res.result.userInfo.name
+																key: "me",
+																data: res.result.me
 															})
 															uni.reLaunch({
 																url: '/pages/menu/menu'

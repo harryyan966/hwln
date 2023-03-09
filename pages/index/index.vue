@@ -36,18 +36,15 @@
 		                		})
 		                		return
 		                	}
-							if (res.result.userInfo) {
+							if (res.result.me) {
 								uni.setStorage({
-									key: "identity",
-									data: res.result.identity
-								})
-								uni.setStorage({
-									key: "name",
-									data: res.result.userInfo.name
+									key: "me",
+									data: res.result.me
 								})
 								uni.reLaunch({
 									url: "/pages/menu/menu"
 								})
+								console.log(res.result.me)
 							}
 						},
 						fail: (err) => {

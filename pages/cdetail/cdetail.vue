@@ -39,7 +39,7 @@
 				<view v-if="identity == 'teacher'" class="btn warning" @click="remove">转让或删除班级</view>
 				<view v-if="identity == 'student'" class="btn warning" @click="quit">退出班级</view>
 			</view>
-			<view v-if="!related" class="description">
+			<view v-if="identity == 'student' && !related" class="description">
 				<img src="/static/icons/symbols/a3-danger.svg" class="dimg" style="margin-top: -10rpx; margin-right: 40rpx;">
 				<view class="dtext">加入班级</view>
 			</view>
@@ -62,15 +62,15 @@
 
 		onLoad(e) {
 			uni.getStorage({
-				key: "identity",
+				key: "me",
 				success: (res) => {
-					this.identity = res.data
+					this.identity = res.data.identity
 					cloudApi.call({
 						name: "getClasses",
 						data: {
 							query: "cdetail",
 							cname: e.cname,
-							identity: res.data
+							identity: res.data.identity
 						},
 						success: (res) => {
 							if (res.result.err == "user not logged in") {
@@ -100,11 +100,11 @@
 			act(query, name) {
 				let title;
 				if (query == "accept") 
-					title = "确认接受" + name + "加入" + detail.name + "吗？"
+					title = "确认接受" + name + "加入" + this.detail.name + "吗？"
 				if (query == "deny") 
-					title = "确认拒绝" + name + "加入" + detail.name + "吗？"
-				if (query == "accept") 
-					title = "确认将" + name + "移出" + detail.name + "吗？"
+					title = "确认拒绝" + name + "加入" + this.detail.name + "吗？"
+				if (query == "remove") 
+					title = "确认将" + name + "移出" + this.detail.name + "吗？"
 
 				uni.showModal({
 					title: title,
@@ -207,10 +207,10 @@
                 			title: "成功退出班级"
                 		})
                 		uni.getStorage({
-                			key: "name",
+                			key: "me",
                 			success: (res) => {
-                				this.detail.pending = this.detail.pending.filter( e => e != res.data )
-		                		this.detail.students = this.detail.students.filter( e => e != res.data )
+                				this.detail.pending = this.detail.pending.filter( e => e != res.data.name )
+		                		this.detail.students = this.detail.students.filter( e => e != res.data.name )
 		                		this.related = false
                 			}
                 		})
@@ -236,6 +236,13 @@
 							})
 							return
 						}
+						if (res.result.err == "cannot join more than one classes") {
+							uni.showToast({
+								icon: "error",
+								title: "加入班级过多"
+							})
+							return
+						}
 						if (res.result.err) {
 	                		uni.showToast({
 	                			icon: "error",
@@ -248,9 +255,9 @@
                 			title: "申请成功"
                 		})
                 		uni.getStorage({
-                			key: "name",
+                			key: "me",
                 			success: (res) => {
-                				this.detail.pending.push(res.data)
+                				this.detail.pending.push(res.data.name)
 		                		this.related = true
                 			}
                 		})

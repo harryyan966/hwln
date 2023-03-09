@@ -24,34 +24,34 @@ exports.main = async (event, context) => {
 	// get user data
 	let identity = undefined;
 
-	let userInfo = (await db.collection("students").where({ openid: openid }).get()).data;
-	console.log(userInfo)
+	let me = (await db.collection("students").where({ openid: openid }).get()).data;
+	console.log(me)
 
-	if (userInfo.length > 0) {
-		userInfo = userInfo[0];
+	if (me.length > 0) {
+		me = me[0];
 		identity = "student"
 	}
 	else {
-		userInfo = (await db.collection("teachers").where({ openid: openid }).get()).data;
+		me = (await db.collection("teachers").where({ openid: openid }).get()).data;
 
-		if (userInfo.length > 0) {
-			userInfo = userInfo[0];
+		if (me.length > 0) {
+			me = me[0];
 			identity = "teacher"
 		}
-		else userInfo = undefined
+		else me = undefined
 	}
 
-	if (userInfo) {
+	if (me) {
 		// prevent openid from being visible in the front-end
-		delete userInfo.openid
+		delete me.openid
+		me.identity = identity
 	}
 
 	// return the jwt, or encrypted openid available for a certain period of time
 	const token = common.getToken(openid);
 
 	return {
-		userInfo: userInfo,
-		identity: identity,
+		me: me,
 		token: token
 	}
 };

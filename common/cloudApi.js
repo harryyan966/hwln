@@ -26,6 +26,9 @@ function call(option) {
         if (res.result.token) {
           token = res.result.token;
         }
+        console.log(option.name)
+        if (option.name == "umanage" && option.data.query == "delete")
+          token = undefined
         // retain original behavior
         if (option.success) {
           option.success(res);

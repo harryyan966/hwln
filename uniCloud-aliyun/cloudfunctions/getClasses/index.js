@@ -12,10 +12,12 @@ exports.main = async (event, context) => {
 	
 	if (event.query == "write") {
 
+		if (event.identity != "teacher" && event.identity != "student")
+			return { err: "invalid identity" }
+
 		let classes = {}
 		let cnames = []
 		if (raw.length != 0) {
-			console.log(event.identity)
 			if (event.identity == "teacher") {
 				for (let c of raw) {
 					classes[c.name] = c.students

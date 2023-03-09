@@ -74,7 +74,7 @@
 				                	// return to class view
 				                	console.log(res)
 				                	uni.navigateBack({
-				                		delta: 1
+				                		delta: 2
 				                	})
 					            }
 				            })

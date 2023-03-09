@@ -23,9 +23,9 @@
 
 		onLoad() {
 			uni.getStorage({
-				key: "identity",
+				key: "me",
 				success: (res) => {
-					this.identity = res.data
+					this.identity = res.data.identity
 					cloudApi.call({
 						name: "getClasses",
 						data: {
@@ -35,7 +35,7 @@
 							if (res.result.err) {
 		                		uni.showToast({
 		                			icon: "error",
-		                			title: "error: " + res.result.err
+		                			title: res.result.err
 		                		})
 		                		return
 		                	}

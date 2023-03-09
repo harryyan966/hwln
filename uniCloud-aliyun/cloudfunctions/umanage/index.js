@@ -15,7 +15,7 @@ exports.main = async (event, context) => {
 		return { err: "invalid identity" }
 	
 	let me = (await db.collection(event.identity + "s").where({ openid: openid }).get()).data
-	console.log(me)
+
 	if (me.length == 0)
 		return { err: "user does not exist" }
 	else
@@ -26,10 +26,17 @@ exports.main = async (event, context) => {
 		if (event.identity == "teacher")
 			return { err: "invalid request" }
 
+		// you must not have a class to join a class
+		if (me.crel)
+			return { err: "cannot join more than one classes" }
+
 		// you must be out of the class to join the class
 		let myclass = (await db.collection("xClasses").where({ name: event.cname }).get()).data[0]
 		if (myclass && myclass.students.includes(me.name))
 			return { err: "joined already" }
+
+		// ensure the user doesn't join other classes
+		await db.collection("students").doc(me._id).update({ crel: true })
 
 		// join the class
 		await db.collection("xClasses").doc(myclass._id).update({
@@ -37,8 +44,11 @@ exports.main = async (event, context) => {
 		})
 	}
 	else if (event.query == "quit") {
+		// you must be a student to join a class
+		if (event.identity == "teacher")
+			return { err: "invalid request" }
+
 		let classes = (await db.collection("xClasses").get()).data
-		console.log(classes)
 		let myclass = classes.find( e => e.students.includes(me.name) )
 
 		// if i am in the class, quit the class
@@ -46,6 +56,7 @@ exports.main = async (event, context) => {
 			await db.collection("xClasses").doc(myclass._id).update({
 				students: myclass.students.filter( e => e != me.name )
 			})
+
 		// if i am pending, end the join request
 		else if (myclass = classes.find( e => e.pending.includes(me.name) )) {
 			if (!myclass)
@@ -55,10 +66,13 @@ exports.main = async (event, context) => {
 			})
 			console.log("remove from pending success")
 		}
+
+		// allow the user to join other classes
+		await db.collection("students").doc(me._id).update({ crel: false })
 	}
 	else if (event.query == "delete") {
 		let classes = (await db.collection("xClasses").get()).data
-		console.log(await db.collection(event.identity + "s").doc(me._id).remove())
+		await db.collection(event.identity + "s").doc(me._id).remove()
 
 		if (event.identity == "teacher") {
 			// delete all my classes
@@ -85,9 +99,7 @@ exports.main = async (event, context) => {
 		if (event.identity == "teacher")
 			return { err: "invalid request" }
 
-		await db.collection("students").doc(me._id).update({
-			dorm: event.newdorm
-		})
+		await db.collection("students").doc(me._id).update({ dorm: event.newdorm })
 	}
 	
 	return {}

@@ -33,12 +33,12 @@
 
 		onShow() {
 			uni.getStorage({
-				key: "identity",
+				key: "me",
 				success: (res) => {
 					cloudApi.call({
 						name: "getNotes",
 						data: {
-							identity: res.data
+							identity: res.data.identity
 						},
 						success: (res) => {
 							if (res.result.err == "user not logged in") {
@@ -70,6 +70,7 @@
 					})
 				},
 				fail: (err) => {
+					console.log(err)
 					uni.navigateTo({
 						url: "/pages/index/index"
 					})

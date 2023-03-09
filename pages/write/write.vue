@@ -31,6 +31,7 @@
 			@change="e => { noteInfo.date = e; warnings.date = '' }"
 			:options="dates"
 			:warning="warnings.date"
+			style="white-space: pre;"
 			/>
 
 			<!-- ask for supervisor -->
@@ -87,13 +88,13 @@
 
 		onLoad() {
 			uni.getStorage({
-				key: "identity",
+				key: "me",
 				success: (res) => {
 					cloudApi.call({
 						name: "getClasses",
 						data: {
 							query: "write",
-							identity: res.data
+							identity: res.data.identity
 						},
 						success: (res) => {
 							if (res.result.err) {
@@ -131,17 +132,18 @@
 			// get available dates
 
 			// allow the user to select within five days from now
+			const DAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 			this.dates = [];
 			let now = new Date();
 			// check if we should include today
 			if (now.getHours() < 12) {
-				this.dates.push(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`);
+				this.dates.push(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} (${DAYS[now.getDay()]})`);
 			}
 			// add a date until there are five available dates
 			while (this.dates.length < 5) {
 				// advance one day
 				now.setTime(now.getTime() + 1000*60*60*24);
-				this.dates.push(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`);
+				this.dates.push(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} (${DAYS[now.getDay()]})`);
 			}
 		},
 
@@ -167,7 +169,7 @@
 				
 				// ensures the user inputs a valid date
 				let now = new Date();
-				let chosenDate = new Date(this.dates[this.noteInfo.date]);
+				let chosenDate = new Date(this.dates[this.noteInfo.date].split(' ')[0]);
 				
 				// if it is already afternoon but the date chosen is still today...
 				if (now.getHours() > 12 && chosenDate.getDate() == now.getDate()) {
@@ -178,7 +180,7 @@
 					// remind the user if he/she is choosing the date in weekends
 					if (chosenDate.getDay() == 0 || chosenDate.getDay() == 6)	{	// Weekends
 						uni.showModal({
-							title: `${this.dates[this.noteInfo.date]}是周末，确认创建吗？`,
+							title: `${this.dates[this.noteInfo.date].split(' ')[0]}是周末，确认创建吗？`,
 							success: (res) => {
 								if (res.confirm) {
 									this.complete();
@@ -209,7 +211,7 @@
 					data: {
 						class: cname,
 						students: students,
-						date: this.dates[this.noteInfo.date],
+						date: this.dates[this.noteInfo.date].split(' ')[0],
 						supervisor: this.teachers[this.noteInfo.supervisor],
 						message: this.noteInfo.message,
 						ssuper: false,

@@ -100,7 +100,8 @@
 							if (res.result.err) {
 		                		uni.showToast({
 		                			icon: "error",
-		                			title: "error: " + res.result.err
+		                			duration: 2000,
+		                			title: res.result.err
 		                		})
 		                		return
 		                	}
@@ -121,7 +122,8 @@
 					if (res.result.err) {
                 		uni.showToast({
                 			icon: "error",
-                			title: "error: " + res.result.err
+                			duration: 2000,
+                			title: res.result.err
                 		})
                 		return
                 	}
@@ -221,7 +223,8 @@
 						if (res.result.err) {
 	                		uni.showToast({
 	                			icon: "error",
-	                			title: "error: " + res.result.err
+	                			duration: 2000,
+	                			title: res.result.err
 	                		})
 	                		return
 	                	}

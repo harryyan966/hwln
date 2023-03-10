@@ -76,6 +76,7 @@
      						})
      						uni.showToast({
 								icon: "none",
+								duration: 1500,
 								title: "您尚未登录"
 							})
      						return
@@ -83,6 +84,7 @@
 						if (res.result.err == "not authorized") {
 							uni.showToast({
 								icon: "none",
+								duration: 1500,
 								title: "暂无权限签字"
 							})
 							return
@@ -93,6 +95,7 @@
      						})
 							uni.showToast({
 								icon: "none",
+								duration: 1500,
 								title: "假条不存在"
 							})
 							return
@@ -100,7 +103,8 @@
 						if (res.result.err) {
 	                		uni.showToast({
 	                			icon: "error",
-	                			title: "error: " + res.result.err
+	                			duration: 1500,
+	                			title: res.result.err
 	                		})
 	                		return
 	                	}

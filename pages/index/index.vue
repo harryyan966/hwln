@@ -32,7 +32,8 @@
 							if (res.result.err) {
 		                		uni.showToast({
 		                			icon: "error",
-		                			title: "error: " + res.result.err
+		                			duration: 1500,
+		                			title: res.result.err
 		                		})
 		                		return
 		                	}
@@ -50,6 +51,7 @@
 						fail: (err) => {
 							uni.showToast({
 								icon:'error',
+								duration: 1500,
 								title:'登录失败'
 							});
 						},

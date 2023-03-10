@@ -35,12 +35,12 @@ exports.main = async (event, context) => {
 		if (myclass && myclass.students.includes(me.name))
 			return { err: "joined already" }
 
-		// ensure the user doesn't join other classes
+		// lock myself to the class
 		await db.collection("students").doc(me._id).update({ crel: true })
 
 		// join the class
 		await db.collection("xClasses").doc(myclass._id).update({
-			pending: myclass.pending.concat([me.name])
+			pending: [me.name].concat(myclass.pending)
 		})
 	}
 	else if (event.query == "quit") {
@@ -67,18 +67,25 @@ exports.main = async (event, context) => {
 			console.log("remove from pending success")
 		}
 
-		// allow the user to join other classes
+		// free myself
 		await db.collection("students").doc(me._id).update({ crel: false })
 	}
 	else if (event.query == "delete") {
+		// delete my data
 		let classes = (await db.collection("xClasses").get()).data
 		await db.collection(event.identity + "s").doc(me._id).remove()
 
 		if (event.identity == "teacher") {
-			// delete all my classes
+			// delete all my classes and free all students
+			let students = (await db.collection("students").get()).data
 			for (let c of classes) {
-				if (c.teacher == me.name)
+				if (c.teacher == me.name) {
 					await db.collection("xClasses").doc(c._id).remove()
+
+					let stu = students.filter( e => c.students.includes(e.name) || c.pending.includes(e.name) )
+					for (let s of stu)
+						await db.collection("students").doc(s._id).update({ crel: false })
+				}
 			}
 		}
 		else if (event.identity == "student") {

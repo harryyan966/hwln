@@ -79,6 +79,7 @@
 	     						})
 	     						uni.showToast({
 									icon: "error",
+									duration: 1500,
 									title: "您尚未登录"
 								})
 								return
@@ -110,63 +111,69 @@
 					title: title,
 					success: (res) => {
 						if (res.confirm) {
-							uni.showToast({
-								icon: "success",
-								title: "操作成功"
+							cloudApi.call({
+								name: "cmanage",
+								data: {
+									query: query,
+									who: name,
+									cname: this.detail.name
+								},
+								success: (res) => {
+									// handle errors
+									if (res.result.err == "user not logged in") {
+										uni.navigateTo({
+											url: "/pages/index/index"
+				 						})
+				 						uni.showToast({
+											icon: "error",
+											duration: 1500,
+											title: "您尚未登录"
+										})
+										return
+									}
+									if (res.result.err == "not authorized") {
+										uni.showToast({
+											icon: "error",
+											duration: 1500,
+											title: "权限不足"
+										})
+										return
+									}
+									if (res.result.err == "the student haven't requested for the join" || res.result.err == "the student is not in the class") {
+										uni.showToast({
+											icon: "error",
+											duration: 1500,
+											title: "操作失败，刷新下试试~"
+										})
+										return
+									}
+									if (res.result.err) {
+				                		uni.showToast({
+				                			icon: "error",
+				                			duration: 1500,
+				                			title: res.result.err
+				                		})
+				                		return
+				                	}
+									// update interface
+									if (query == "accept") {
+										this.detail.students.push(name)
+										this.detail.pending = this.detail.pending.filter( e => e != name )
+									}
+									else if (query == "deny") {
+										this.detail.pending = this.detail.pending.filter( e => e != name )
+									}
+									else if (query == "remove") {
+										this.detail.students = this.detail.students.filter( e => e != name )
+									}
+									// show success message
+									uni.showToast({
+										icon: "success",
+										duration: 1500,
+										title: "操作成功"
+									})
+								}
 							})
-						}
-					}
-				})
-				cloudApi.call({
-					name: "cmanage",
-					data: {
-						query: query,
-						who: name,
-						cname: this.detail.name
-					},
-					success: (res) => {
-						// handle errors
-						if (res.result.err == "user not logged in") {
-							uni.navigateTo({
-								url: "/pages/index/index"
-	 						})
-	 						uni.showToast({
-								icon: "error",
-								title: "您尚未登录"
-							})
-							return
-						}
-						if (res.result.err == "not authorized") {
-							uni.showToast({
-								icon: "error",
-								title: "权限不足"
-							})
-							return
-						}
-						if (res.result.err == "the student haven't requested for the join" || res.result.err == "the student is not in the class") {
-							uni.showToast({
-								icon: "error",
-								title: "操作失败，刷新下试试~"
-							})
-							return
-						}
-						if (res.result.err) {
-	                		uni.showToast({
-	                			icon: "error",
-	                			title: "error: " + res.result.err
-	                		})
-	                		return
-	                	}
-						// update interface
-						if (query == "accept") {
-							this.detail.students.push(name)
-							this.detail.pending = this.detail.pending.filter( e => e != name )
-						}
-						else if (query == "deny") {
-							this.detail.pending = this.detail.pending.filter( e => e != name )
-						}
-						else if (query == "remove") {
-							this.detail.students = this.detail.students.filter( e => e != name )
 						}
 					}
 				})
@@ -191,6 +198,7 @@
 							})
 							uni.showToast({
 								icon: "none",
+								duration: 1500,
 								title: "您尚未登录"
 							})
 							return
@@ -198,12 +206,14 @@
 						if (res.result.err) {
 	                		uni.showToast({
 	                			icon: "none",
+	                			duration: 1500,
 	                			title: "error: " + res.result.err
 	                		})
 	                		return
 	                	}
                 		uni.showToast({
                 			icon: "success",
+                			duration: 1500,
                 			title: "成功退出班级"
                 		})
                 		uni.getStorage({
@@ -232,6 +242,7 @@
 							})
 							uni.showToast({
 								icon: "error",
+								duration: 1500,
 								title: "您尚未登录"
 							})
 							return
@@ -239,6 +250,7 @@
 						if (res.result.err == "cannot join more than one classes") {
 							uni.showToast({
 								icon: "error",
+								duration: 1500,
 								title: "加入班级过多"
 							})
 							return
@@ -246,12 +258,14 @@
 						if (res.result.err) {
 	                		uni.showToast({
 	                			icon: "error",
+	                			duration: 1500,
 	                			title: res.result.err
 	                		})
 	                		return
 	                	}
                 		uni.showToast({
                 			icon: "success",
+                			duration: 1500,
                 			title: "申请成功"
                 		})
                 		uni.getStorage({

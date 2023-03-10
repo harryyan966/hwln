@@ -45,7 +45,8 @@
 					if (res.result.err) {
                 		uni.showToast({
                 			icon: "error",
-                			title: "error: " + res.result.err
+                			duration: 2000,
+                			title: res.result.err
                 		})
                 		return
                 	}
@@ -83,6 +84,7 @@
 			     						})
 			     						uni.showToast({
 											icon: "none",
+											duration: 1500,
 											title: "您尚未登录"
 										})
 			     						return
@@ -90,12 +92,14 @@
             						if (res.result.err) {
 				                		uni.showToast({
 				                			icon: "error",
-				                			title: "error: " + res.result.err
+				                			duration: 2000,
+				                			title: res.result.err
 				                		})
 				                		return
 				                	}
 				                	uni.showToast({
 										icon: "none",
+										duration: 1500,
 										title: (q == "transfer" ? "转让" : "删除") + "成功"
 									})
 				                	uni.navigateBack({

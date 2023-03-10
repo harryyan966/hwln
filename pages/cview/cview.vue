@@ -35,6 +35,7 @@
 							if (res.result.err) {
 		                		uni.showToast({
 		                			icon: "error",
+		                			duration: 2000,
 		                			title: res.result.err
 		                		})
 		                		return

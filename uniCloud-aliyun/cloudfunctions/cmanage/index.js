@@ -40,6 +40,12 @@ exports.main = async (event, context) => {
 
 		// remove class
 		await db.collection("xClasses").doc(myclass._id).remove()
+
+		// free all students
+		let students = (await db.collection("students").get()).data
+		students = students.filter( e => myclass.students.includes(e.name) || myclass.pending.includes(e.name) )
+		for (let s of students)
+			await db.collection("students").doc(s._id).update({ crel: false })
 	}
 	else if (event.query == "transfer") {
 		// check class ownership
@@ -71,24 +77,44 @@ exports.main = async (event, context) => {
 		if (event.query == "accept") {
 			if (!myclass.pending.includes(event.who))
 				return { err: "the student haven't requested for the join" }
+
+			// let student in the class
 			await db.collection("xClasses").doc(myclass._id).update({
-					students: myclass.students.concat([event.who]),
+					students: [event.who].concat(myclass.students),
 					pending: myclass.pending.filter( e => e != event.who )
 				})
 		}
 		else if (event.query == "deny") {
 			if (!myclass.pending.includes(event.who))
 				return { err: "the student haven't requested for the join" }
+
+			// remove student from pending
 			await db.collection("xClasses").doc(myclass._id).update({
 				pending: myclass.pending.filter( e => e != event.who )
 			})
+
+			// free the student
+			let s = (await db.collection("students").where({ name: event.who }).get()).data
+			if (s.length == 0)
+				return { err: "specified student does not exist" }
+			s = s[0]
+			await db.collection("students").doc(s._id).update({ crel: false })
 		}
-		else if (event.query == "remove") {
+		else if (event.query == "remove") {			
 			if (!myclass.students.includes(event.who))
 				return { err: "the student is not in the class" }
+
+			// remove student from class
 			await db.collection("xClasses").doc(myclass._id).update({
 				students: myclass.students.filter( e => e != event.who )
 			})
+
+			// free the student
+			let s = (await db.collection("students").where({ name: event.who }).get()).data
+			if (s.length == 0)
+				return { err: "specified student does not exist" }
+			s = s[0]
+			await db.collection("students").doc(s._id).update({ crel: false })
 		}
 	}
 

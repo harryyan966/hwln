@@ -79,7 +79,8 @@
 					if (res.result.err) {
                 		uni.showToast({
                 			icon: "error",
-                			title: "error: " + res.result.err
+                			duration: 2000,
+                			title: res.result.err
                 		})
                 		return
                 	}
@@ -127,6 +128,7 @@
 									if (res.result.err) {
 				                		uni.showToast({
 				                			icon: "error",
+				                			duration: 2000,
 				                			title: res.result.err
 				                		})
 				                		return
@@ -134,6 +136,7 @@
 				                	this.dorm = dorm
 									uni.showToast({
 										icon: "none",
+										duration: 1500,
 										title: "宿舍更改成功"
 									})
 								}
@@ -158,12 +161,14 @@
 									if (res.result.err) {
 				                		uni.showToast({
 				                			icon: "error",
+				                			duration: 2000,
 				                			title: res.result.err
 				                		})
 				                		return
 				                	}
 									uni.showToast({
 										icon: "none",
+										duration: 1500,
 										title: "账号删除成功"
 									})
 									uni.reLaunch({

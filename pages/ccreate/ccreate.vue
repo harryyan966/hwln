@@ -56,6 +56,7 @@
 			     						})
 			     						uni.showToast({
 											icon: "none",
+											duration: 1500,
 											title: "您尚未登录"
 										})
 			     						return
@@ -67,7 +68,8 @@
 				                	if (res.result.err) {
 				                		uni.showToast({
 				                			icon: "error",
-				                			title: "error: " + res.result.err
+				                			duration: 1500,
+				                			title: res.result.err
 				                		})
 				                		return
 				                	}

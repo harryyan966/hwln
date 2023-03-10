@@ -6,7 +6,7 @@
 		<!-- ask for real name -->
 		<TextInput
 		icon="symbols/p-user.svg"
-		placeholder="真实姓名(让大家认识你)"
+		placeholder="请填 !真实! 姓名[合十]"
 		@change="e => { usrInfo.name = e; warnings.name = '' }"
 		:warning="warnings.name"
 		/>
@@ -88,7 +88,8 @@
 					if (res.result.err) {
                 		uni.showToast({
                 			icon: "error",
-                			title: "error: " + res.result.err
+                			duration: 2000,
+                			title: res.result.err
                 		})
                 		return
                 	}
@@ -117,7 +118,8 @@
 						if (res.result.err) {
 	                		uni.showToast({
 	                			icon: "error",
-	                			title: "error: " + res.result.err
+	                			duration: 2000,
+	                			title: res.result.err
 	                		})
 	                		return
 	                	}
@@ -218,7 +220,8 @@
 															if (res.result.err) {
 										                		uni.showToast({
 										                			icon: "error",
-										                			title: "error: " + res.result.err
+										                			duration: 2000,
+										                			title: res.result.err
 										                		})
 										                		return
 										                	}
@@ -233,6 +236,7 @@
 														fail: (err) => {
 															uni.showToast({
 																icon: "none",
+																duration: 1500,
 																title: "注册发生错误"
 															})
 														}

@@ -52,7 +52,7 @@ exports.main = async (event, context) => {
 	}
 
 	// sort notes from oldest to newest
-	notes = notes.reverse()
+	notes.reverse()
 	notes.sort((a,b) => {
 		return new Date(a.date) - new Date(b.date)
 	});

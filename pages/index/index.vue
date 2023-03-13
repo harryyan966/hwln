@@ -47,6 +47,7 @@
 								})
 								console.log(res.result.me)
 							}
+							this.loaded = true
 						},
 						fail: (err) => {
 							uni.showToast({
@@ -57,7 +58,6 @@
 						},
 						complete: (e) => {
 							console.log(e)
-							this.loaded = true
 						}
 					})
 				}

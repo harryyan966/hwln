@@ -22,7 +22,8 @@ exports.main = async (event, context) => {
 	delete me.code
 	delete me.token
 
-	me.crel = false
+	if (identity == "student")
+		me.crel = false
 	me.openid = openid
 
 	await db.collection(identity + "s").add(me)

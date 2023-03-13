@@ -100,7 +100,7 @@
 		methods: {
 			act(query, name) {
 				let title;
-				if (query == "accept") 
+				if (query == "accept")
 					title = "确认接受" + name + "加入" + this.detail.name + "吗？"
 				if (query == "deny") 
 					title = "确认拒绝" + name + "加入" + this.detail.name + "吗？"

@@ -95,15 +95,36 @@
                 	}
 					this.halls = res.result.data.halls
 					this.rooms = res.result.data.rooms
-					console.log(this.halls)
-					console.log(this.rooms)
 				}
 			})
 		},
 		methods: {
 			async validTeacherKey() {
-				// TODO: get teacherkey from server and compare hash
-				return this.teacherKey == "";
+				let result
+				await cloudApi.call({
+					name: "keymanage",
+					data: {
+						query: "check",
+						key: this.teacherKey
+					},
+					success: (res) => {
+						if (res.result.err) {
+							uni.showToast({
+								icon: "error",
+								duration: 2000,
+								title: res.result.err
+							})
+							return
+						}
+						// if (!res.result.cmp) {
+							// this.warnings.teacherKey = "「teacherkey」错误"
+						// }
+						console.log(res)
+						result = res.result.cmp
+					}
+				})
+				console.log(result)
+				return result
 			},
 
 			async existsDuplicates() {
@@ -123,8 +144,7 @@
 	                		})
 	                		return
 	                	}
-						console.log(res.result)
-						duplicate = res.result.data.find(e => e == this.usrInfo.name) != undefined
+						duplicate = res.result.data.find(e => e == this.usrInfo.name)
 					}
 				})
 				return duplicate;
@@ -146,9 +166,11 @@
 					this.warnings.identity = '请告诉我们您的身份'; valid = false;
 				}
 				
-				let validTKey = await this.validTeacherKey();
-				if (this.usrInfo.identity == 0 && !validTKey) {
-					this.warnings.teacherKey = 'teacherkey错误'; valid = false;
+				if (this.usrInfo.identity == 0) {
+					let validkey = await this.validTeacherKey()
+					if (!validkey) {
+						this.warnings.teacherKey = 'teacherkey错误'; valid = false;
+					}
 				}
 				
 				if (this.usrInfo.identity == 1) {
@@ -160,8 +182,7 @@
 					}
 				}
 
-				let duplicates = await this.existsDuplicates();
-				console.log("result from await: "+ duplicates);
+				let duplicates = await this.existsDuplicates()
 				if (duplicates) {
 					this.warnings.name = '名字重复了...换一个试试吧'; valid = false;
 				}

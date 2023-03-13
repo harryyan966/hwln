@@ -127,7 +127,7 @@
                 		})
                 		return
                 	}
-					this.teachers = res.result.data
+					this.teachers = res.result.data.map( e => e + "老师" )
 				}
 			})
 
@@ -214,7 +214,7 @@
 						class: cname,
 						students: students,
 						date: this.dates[this.noteInfo.date].split(' ')[0],
-						supervisor: this.teachers[this.noteInfo.supervisor],
+						supervisor: this.teachers[this.noteInfo.supervisor].slice(0,-2),
 						message: this.noteInfo.message,
 						ssuper: false,
 						sclass: false

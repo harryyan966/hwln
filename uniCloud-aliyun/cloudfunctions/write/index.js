@@ -20,11 +20,8 @@ exports.main = async (event, context) => {
 	}
 	event.dorms = dorms.join("，");
 	delete event.token
-	let now = Date()
-	// event.createtime = 
 
 	await db.collection("xNotes").add(event)
 	
-	return {
-	}
+	return {}
 };

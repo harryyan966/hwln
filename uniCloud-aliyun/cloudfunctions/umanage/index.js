@@ -102,11 +102,19 @@ exports.main = async (event, context) => {
 				})
 		}
 	}
-	else if (event.query == "newdorm") {
+	else if (event.query == "changedorm") {
 		if (event.identity == "teacher")
 			return { err: "invalid request" }
 
 		await db.collection("students").doc(me._id).update({ dorm: event.newdorm })
+	}
+	/*
+	else if (event.query == "changename") {
+		await db.collection(event.identity + "s").doc(me._id).update({ name: event.newname })
+	}
+	*/
+	else {
+		return { err: "invalid query" }
 	}
 	
 	return {}

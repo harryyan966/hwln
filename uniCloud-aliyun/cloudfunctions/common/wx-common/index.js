@@ -1,5 +1,5 @@
 const appid = "wx9c5df84eba07ad76";
-const appsecret = "1941dbdb4cb5014c3f72f7c1cadeb852";
+const appsecret = "de455a3d59e3baff8cac2fc458c8a5ff";
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs')

@@ -35,6 +35,7 @@ function call(option) {
         }
         // return result
         resolve(res);
+        uni.hideLoading();
       },
 
       fail(err) {
@@ -44,10 +45,11 @@ function call(option) {
         }
         // return error
         resolve(err);
+        uni.hideLoading();
       },
 
       complete() {
-        uni.hideLoading();
+        // uni.hideLoading();
 
         // retain original behavior
         if (option.complete) {

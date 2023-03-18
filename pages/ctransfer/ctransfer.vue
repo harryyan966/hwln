@@ -97,10 +97,10 @@
 				                		})
 				                		return
 				                	}
-				                	uni.showToast({
-										icon: "none",
-										duration: 1500,
-										title: (q == "transfer" ? "转让" : "删除") + "成功"
+				                	uni.showModal({
+										icon: "success",
+										title: (q == "transfer" ? "转让" : "删除") + "成功",
+										showCancel: false
 									})
 				                	uni.navigateBack({
 				                		delta: 3

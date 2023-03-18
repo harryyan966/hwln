@@ -1,8 +1,14 @@
 ## TODO
 
 - pulldown refresh
+	- view (new notes and changing signed status)
+	- ndetail (sign status)
+	- cdetail (member status)
+	- ...
 
 ## PENDING
+
+- wechat notification (new note related to you, you being accepted, you being denied, you being removed, new class transferred to you)
 
 - joining class is SLOW (cannot figure out why for now)
 
@@ -19,6 +25,8 @@
 - update storage when data changed
 
 - HANDLE ALL DATA PROCESSING IN THE BACK-END (safety?)
+
+- binary search for names?
 
 ## RESOLVED (PERHAPS)
 

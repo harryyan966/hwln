@@ -6,6 +6,20 @@
 	- cdetail (member status)
 	- ...
 
+- __share via wechat__
+
+- __English version__
+	- candidates
+		- ZH/EN toggler
+		- ZH + EN
+		- EN
+- wechat notification
+	- new note related to you
+	- note related to you being signed
+	- you being accepted into a class
+	- you being removed from a class
+	- class transferred to you
+
 ## PENDING
 
 - wechat notification (new note related to you, you being accepted, you being denied, you being removed, new class transferred to you)

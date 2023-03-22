@@ -128,6 +128,9 @@
 			},
 
 			async existsDuplicates() {
+				if (this.usrInfo.identity == -1)
+					return false
+				
 				let duplicate = false;
 				await cloudApi.call({
 					name: "getUsers",

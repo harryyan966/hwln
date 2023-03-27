@@ -10,7 +10,7 @@
 					</view>
 				</picker>
 			</view>
-			<span class="warning">{{ warning }}</span>
+			<span class="warning" v-html="warning"></span>
 		</view>
 	</view>
 </template>

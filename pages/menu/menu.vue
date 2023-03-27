@@ -1,11 +1,11 @@
 <template>
 	<view>
-		<view class="title primary">主菜单</view>
+		<view class="title primary">主菜单<br>menu</view>
 		<view class="container">
-			<navigator url="/pages/write/write" class="btn acc1">写假条</navigator>
-			<navigator url="/pages/view/view" class="btn acc2">假条本</navigator>
-			<navigator url="/pages/cview/cview" class="btn acc3">班级册</navigator>
-			<navigator url="/pages/settings/settings" class="btn dgray">设置</navigator>
+			<navigator url="/pages/write/write" class="btn acc1">写假条 write</navigator>
+			<navigator url="/pages/view/view" class="btn acc2">假条本 notes</navigator>
+			<navigator url="/pages/cview/cview" class="btn acc3">班级 classes</navigator>
+			<navigator url="/pages/settings/settings" class="btn dgray">设置 settings</navigator>
 		</view>
 	</view>
 </template>

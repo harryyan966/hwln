@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="container">
-			<view class="title primary">海外假条</view>
-			<navigator v-show="loaded" url="/pages/register/register" class="btn">微信登录/注册</navigator>
+			<view class="title primary">海外假条<br>HW Leave Notes</view>
+			<navigator v-show="loaded" url="/pages/register/register" class="btn">微信登录<br>wechat login</navigator>
 		</view>
 	</view>
 </template>

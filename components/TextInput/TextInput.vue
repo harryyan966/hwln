@@ -7,7 +7,7 @@
 				<input type="text" v-model="inputData" class="input" @input="$emit('change', inputData)" :placeholder="placeholder">
 				</view>
 			</view>
-			<span class="warning">{{ warning }}</span>
+			<span class="warning" v-html="warning"></span>
 		</view>
 	</view>
 </template>

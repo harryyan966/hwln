@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title dgray">设置</view>
+		<view class="title dgray">设置 settings</view>
 
 		<view class="container">
 			<view class="description" style="margin-bottom: 40rpx;">
 				<img src="/static/icons/symbols/g-user.svg" class="dimg">
-				<view class="dtext">个人信息</view>
+				<view class="dtext">个人信息 my account</view>
 			</view>
-			<view class="btn">{{ name }}({{ identity == "teacher" ? "老师" : "学生" }})</view>
+			<view class="btn">{{ name }}<br>({{ identity == "teacher" ? "老师 teacher" : "学生 student" }})</view>
 			<view v-if="dorm" class="btn">{{ dorm }}</view>
 
 			<!-- 
@@ -30,12 +30,12 @@
 			<!-- change dorm -->
 			<view v-if="identity == 'student'" class="description">
 				<img src="/static/icons/symbols/g-change.svg" class="dimg">
-				<view class="dtext">更改宿舍</view>
+				<view class="dtext">更改宿舍 change dorm</view>
 			</view>
 			<SelectInput
 			v-if="identity == 'student'"
 			icon="symbols/g-dorm.svg"
-			placeholder="新的宿舍楼？"
+			placeholder="新的宿舍楼？new hall"
 			color="g"
 			@change="e => { ihall = e; iroom = '-1'; whall = '' }"
 			:options="halls"
@@ -45,7 +45,7 @@
 			<SelectInput
 			v-if="identity == 'student'"
 			v-show="ihall != -1"
-			placeholder="新的房间？"
+			placeholder="新的房间？new room"
 			color="g"
 			icon="symbols/g-room.svg"
 			@change="e => { iroom = e; wroom = '' }"
@@ -54,14 +54,14 @@
 			style="margin-top: -60rpx;"
 			/>
 
-			<view v-if="identity == 'student'" class="btn" @click="changedorm">更改宿舍</view>
+			<view v-if="identity == 'student'" class="btn" @click="changedorm">更改宿舍<br>change dorm</view>
 
 			<!-- change teacher key -->
 			<TextInput
 			v-if="identity == 'teacher'"
 			icon="symbols/g-tkey.svg"
-			placeholder="旧的「teacherkey」"
-			@change="e => { prevkey = e; prevwarn = '' }"
+			placeholder="旧 (old) 「teacherkey」"
+			@change="e => { prevkey = e; prevwarn = ''; tkeywarn = '' }"
 			:warning="prevwarn"
 			style="margin-bottom: -60rpx;"
 			/>
@@ -69,19 +69,19 @@
 			<TextInput
 			v-if="identity == 'teacher'"
 			icon="symbols/w-tkey.svg"
-			placeholder="新的「teacherkey」"
+			placeholder="新 (new) 「teacherkey」"
 			@change="e => { tkey = e; tkeywarn = '' }"
 			:warning="tkeywarn"
 			/>
 
-			<view v-if="identity == 'teacher'" class="btn" @click="changekey">更改「teacherkey」</view>
+			<view v-if="identity == 'teacher'" class="btn" @click="changekey">更改「teacherkey」<br>change 「teacherkey」</view>
 
 			<!-- delete account -->
 			<view class="description warning">
 				<img src="/static/icons/symbols/w-danger.svg" class="dimg">
-				<view class="dtext">注销账号</view>
+				<view class="dtext">注销账号<br>DELETE ACCOUNT</view>
 			</view>
-			<view class="btn warning" @click="del">注销！</view>
+			<view class="btn warning" @click="del">注销！CONFIRM</view>
 		</view>
 	</view>
 </template>
@@ -200,7 +200,7 @@
 
 			changedorm() {
 				if (this.ihall == -1) {
-					this.whall = "请选择宿舍楼"
+					this.whall = "请选择宿舍楼\r\nplease choose a dorm room"
 					return
 				}
 				if (this.iroom == -1) {
@@ -260,8 +260,10 @@
 			},
 			del() {
 				uni.showModal({
-					title: "确认注销账号？",
-					content: "此操作不可撤销！！！！！",
+					title: "确认注销账号？\r\nAre you sure you wish to delete your account?",
+					content: "此操作不可撤销！！！！！\r\nThis action cannot be undone",
+					cancelText: '取消 no',
+					confirmText: '确认 YES',
 					success: (res) => {
 						if (res.confirm) {
 							cloudApi.call({
@@ -296,12 +298,12 @@
 			},
 			changekey() {
 				if (this.prevkey == this.tkey) {
-					this.tkeywarn = "新旧「teacherkey」相同"
+					this.tkeywarn = "新旧「teacherkey」相同<br>try putting a new teacherkey"
 					return
 				}
 				uni.showModal({
-					title: "确认更改「teacherkey」？",
-					content: "该密码用作新教师注册",
+					title: "确认更改「teacherkey」？\r\n",
+					content: "该密码用作新教师注册\r\nThis key is used for teachers' registration",
 					success: (res) => {
 						if (res.confirm) {
 							cloudApi.call({
@@ -324,11 +326,11 @@
 										return
 									}
 									if (res.result.err == "new key matches the current key") {
-			                			this.tkeywarn = "新旧「teacherkey」相同"
+			                			this.tkeywarn = "新旧「teacherkey」相同<br>same teacherkey"
 				                		return
 									}
 									if (res.result.err == "incorrect prevkey") {
-										this.prevwarn = "旧「teacherkey」不正确"
+										this.prevwarn = "旧「teacherkey」不正确<br>incorrect teacherkey"
 										return
 									}
 									if (res.result.err) {
@@ -385,6 +387,6 @@
 	.btn {
 		margin: 40rpx;
 		font-size: 40rpx;
-		width: 400rpx;
+		width: 500rpx;
 	}
 </style>

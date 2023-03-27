@@ -7,13 +7,13 @@
 			<!-- detailed information -->
 			<view class="description">
 				<img src="/static/icons/symbols/a3-teacher.svg" class="dimg" style="margin-top: -10rpx; margin-right: 40rpx;">
-				<view class="dtext">班主任老师</view>
+				<view class="dtext">班主任老师<br>homeroom teacher</view>
 			</view>
 			<view class="btn">{{ detail.teacher }}老师</view>
 
 			<view v-if="detail ? detail.pending.length : false" class="description">
 				<img src="/static/icons/symbols/a3-pending.svg" class="dimg" style="margin-top: -10rpx; margin-right: 40rpx;">
-				<view class="dtext">希望加入班级的学生</view>
+				<view class="dtext">希望加入班级的学生 waitlist</view>
 			</view>
 			<view v-for="p,i in detail.pending" :key="i" class="content">
 				<view class="btn">{{ p }}</view>
@@ -23,7 +23,7 @@
 
 			<view v-if="detail ? detail.students.length : false" class="description">
 				<img src="/static/icons/symbols/a3-people.svg" class="dimg" style="margin-top: -10rpx; margin-right: 40rpx;">
-				<view class="dtext">学生</view>
+				<view class="dtext">学生 members</view>
 			</view>
 			<view v-for="s,i in detail.students" :key="i" class="content">
 				<view class="btn">{{ s }}</view>
@@ -33,17 +33,17 @@
 			<!-- dangerous operations: remove, transfer, quit -->
 			<view v-if="related" class="description">
 				<img src="/static/icons/symbols/a3-danger.svg" class="dimg" style="margin-top: -10rpx; margin-right: 40rpx;">
-				<view class="dtext">危险操作</view>
+				<view class="dtext">危险操作 danger zone</view>
 			</view>
 			<view v-if="related" class="container">
-				<view v-if="identity == 'teacher'" class="btn warning" @click="remove">转让或删除班级</view>
-				<view v-if="identity == 'student'" class="btn warning" @click="quit">退出班级</view>
+				<view v-if="identity == 'teacher'" class="btn warning" @click="remove">转让或删除班级<br>transfer or delete class</view>
+				<view v-if="identity == 'student'" class="btn warning" @click="quit">退出班级<br>quit class</view>
 			</view>
 			<view v-if="identity == 'student' && !related" class="description">
 				<img src="/static/icons/symbols/a3-danger.svg" class="dimg" style="margin-top: -10rpx; margin-right: 40rpx;">
-				<view class="dtext">加入班级</view>
+				<view class="dtext">加入班级 join class</view>
 			</view>
-			<view v-if="identity == 'student' && !related" class="btn acc3" @click="join">加入班级</view>
+			<view v-if="identity == 'student' && !related" class="btn acc3" @click="join">加入班级 join class</view>
 		</view>
 	</view>
 </template>
@@ -101,11 +101,11 @@
 			act(query, name) {
 				let title;
 				if (query == "accept")
-					title = "确认接受" + name + "加入" + this.detail.name + "吗？"
-				if (query == "deny") 
-					title = "确认拒绝" + name + "加入" + this.detail.name + "吗？"
-				if (query == "remove") 
-					title = "确认将" + name + "移出" + this.detail.name + "吗？"
+					title = "确认接受" + name + "加入" + this.detail.name + "吗？" + "<br>accept " + name + " into the class?"
+				if (query == "deny")
+					title = "确认拒绝" + name + "加入" + this.detail.name + "吗？" + "<br>reject " + name + " from entering the class?"
+				if (query == "remove")
+					title = "确认将" + name + "移出" + this.detail.name + "吗？" + "<br>remove " + name + " from the class?"
 
 				uni.showModal({
 					title: title,

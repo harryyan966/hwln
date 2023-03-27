@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title acc3">班级册</view>
+		<view class="title acc3">班级册 classes</view>
 		
 		<view class="container">
 			<view v-for="c,i in cnames" :key="i" class="btn" @click="detail(c)">{{ c }}</view>
-			<navigator v-if="identity == 'teacher'" url="/pages/ccreate/ccreate" class="btn acc3">创建班级</navigator>
+			<navigator v-if="identity == 'teacher'" url="/pages/ccreate/ccreate" class="btn acc3">创建班级 new class</navigator>
 		</view>
 	</view>
 </template>

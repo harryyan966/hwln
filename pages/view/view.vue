@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title acc2">假条本</view>
+		<view class="title acc2">假条本 notes</view>
 		
 		<!-- display notes -->
 		<view class="container">
-			<view v-if="notes ? notes.length == 0 : false" class="twarn warning">没有与您相关的假条哦</view>
+			<view v-if="notes ? notes.length == 0 : false" class="twarn warning">没有与您相关的假条哦<br>nothing here...</view>
 			<view v-else v-for="note, index in notes" :key="index" class="btn" 
 			:class="{ signed: note.ssuper && note.sclass }" @click="detail(index)">
 				
@@ -13,7 +13,7 @@
 					<view>{{ note.date }}</view>
 					<view>{{ note.class }}</view>
 				</view>
-				<view class="message">请假原因：{{ note.message.slice(0,27) == note.message ? note.message : note.message.slice(0,27) + "..." }}</view>
+				<view class="message">请假事由 reason：{{ note.message.slice(0,27) == note.message ? note.message : note.message.slice(0,27) + "..." }}</view>
 				
 			</view>
 		</view>

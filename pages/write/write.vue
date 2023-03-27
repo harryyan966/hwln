@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title acc1">写假条</view>
+		<view class="title acc1">写假条 write</view>
 		
-		<view v-if="cnames ? cnames.length == 0 : false" class="twarn warning">*只有加入了班级才能填写假条哦</view>
+		<view v-if="cnames ? cnames.length == 0 : false" class="twarn warning">*只有加入了班级才能填写假条哦<br>Please join a class to write notes</view>
 		<view v-else class="container">
 			<!-- the class of the students requesting the leave -->
 			<SelectInput
 			icon="symbols/a1-class.svg"
-			placeholder="班级"
+			placeholder="班级 class"
 			color="a1"
 			@change="e => { noteInfo.class = e; warnings.class = ''; noteInfo.students = [] }"
 			:options="cnames"
@@ -26,7 +26,7 @@
 			<!-- ask for date -->
 			<SelectInput
 			icon="symbols/a1-date.svg"
-			placeholder="日期"
+			placeholder="日期 date"
 			color="a1"
 			@change="e => { noteInfo.date = e; warnings.date = '' }"
 			:options="dates"
@@ -37,7 +37,7 @@
 			<!-- ask for supervisor -->
 			<SelectInput
 			icon="symbols/a1-teacher.svg"
-			placeholder="指导老师"
+			placeholder="指导老师 supervisor"
 			color="a1"
 			@change="e => { noteInfo.supervisor = e; warnings.supervisor = '' }"
 			:options="teachers"
@@ -47,12 +47,12 @@
 			<!-- ask for message and reason -->
 			<TextInput
 			icon="symbols/a1-message.svg"
-			placeholder="请假事由"
+			placeholder="事由 reason"
 			@change="e => { noteInfo.message = e; warnings.message = '' }"
 			:warning="warnings.message"
 			/>
 
-			<view class="btn acc1" @click="submit">提交</view>
+			<view class="btn acc1" @click="submit">提交 submit</view>
 		</view>
 	</view>
 </template>
@@ -134,7 +134,7 @@
 			// get available dates
 
 			// allow the user to select within five days from now
-			const DAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+			const DAYS = ['周日 Sun', '周一 Mon', '周二 Tue', '周三 Wed', '周四 Thu', '周五 Fri', '周六 Sat'];
 			this.dates = [];
 			let now = new Date();
 			// check if we should include today
@@ -154,35 +154,39 @@
 				let valid = true;
 				
 				if (this.noteInfo.class == -1) {
-					this.warnings.class = '请选择班级'; valid = false;
+					this.warnings.class = '请选择班级<br>please select a class'; valid = false;
 				}
 				else if (!this.noteInfo.students.some(e => e)) {
-					this.warnings.students = '请选择需要请假的学生'; valid = false;
+					this.warnings.students = '请选择需要请假的学生<br>please select some students'; valid = false;
 				}
 				if (this.noteInfo.date == -1) {
-					this.warnings.date = '请选择日期'; valid = false;
+					this.warnings.date = '请选择日期<br>please select a date'; valid = false;
 				}
 				if (this.noteInfo.supervisor == -1) {
-					this.warnings.supervisor = '请选择指导老师'; valid = false;
+					this.warnings.supervisor = '请选择指导老师<br>please select a supervisor'; valid = false;
 				}
 				if (this.noteInfo.message.split(" ").join("").length == 0) {
-					this.warnings.message = '请输入请假事由'; valid = false;
+					this.warnings.message = '请输入请假事由<br>please provide a reason for the leave'; valid = false;
 				}
 				
 				// ensures the user inputs a valid date
 				let now = new Date();
-				let chosenDate = new Date(this.dates[this.noteInfo.date].split(' ')[0]);
-				
-				// if it is already afternoon but the date chosen is still today...
-				if (now.getHours() > 12 && chosenDate.getDate() == now.getDate()) {
-					this.warnings.date = '谈笑间已经过了十二点，刷新下页面吧'; valid = false;
+				let chosenDate;
+				if (this.noteInfo.date != -1) {
+					chosenDate = new Date(this.dates[this.noteInfo.date].split(' ')[0]);
+					// if it is already afternoon but the date chosen is still today...
+					if (now.getHours() > 12 && chosenDate.getDate() == now.getDate()) {
+						this.warnings.date = '谈笑间已经过了十二点，刷新下页面吧<br>special issue, please refresh the page'; valid = false;
+					}
 				}
 
 				if (valid) {
 					// remind the user if he/she is choosing the date in weekends
 					if (chosenDate.getDay() == 0 || chosenDate.getDay() == 6)	{	// Weekends
 						uni.showModal({
-							title: `${this.dates[this.noteInfo.date].split(' ')[0]}是周末，确认创建吗？`,
+							title: `${this.dates[this.noteInfo.date].split(' ')[0]}是周末，确认创建吗？\r\nThe date seems to be in a weekend, is this right?`,
+							cancelText: '取消 no',
+							confirmText: '确认 yes',
 							success: (res) => {
 								if (res.confirm) {
 									this.complete();
@@ -230,7 +234,8 @@
 	                	}
 						uni.showModal({
 							showCancel: false,
-							title: "提交成功",
+							confirmText: 'OK',
+							title: "提交成功\r\nSubmitted",
 							success: (res) => {
 								if (res.confirm) {
 									uni.navigateBack({

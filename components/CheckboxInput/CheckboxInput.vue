@@ -6,7 +6,7 @@
 				:class="{ active: selected[index] }" 
 				@click="() => $emit('change', index)">{{ option }}</view>
 			</view>
-			<span class="warning">{{ warning }}</span>
+			<span class="warning" v-html="warning"></span>
 		</view>
 	</view>
 </template>

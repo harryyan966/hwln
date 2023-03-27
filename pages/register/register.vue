@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title primary">注册</view>
+		<view class="title primary">注册 register</view>
 
 		<!-- ask for real name -->
 		<TextInput
 		icon="symbols/p-user.svg"
-		placeholder="请填 !真实! 姓名[合十]"
+		placeholder="!真实! 姓名 name"
 		@change="e => { usrInfo.name = e; warnings.name = '' }"
 		:warning="warnings.name"
 		/>
@@ -14,9 +14,9 @@
 		<!-- ask for identity -->
 		<SelectInput
 		icon="symbols/p-identity.svg"
-		placeholder="您的身份？"
+		placeholder="身份 teacher / student"
 		@change="e => { usrInfo.identity = e; warnings.identity= '' }"
-		:options="['教师', '学生']"
+		:options="['教师 teacher', '学生 student']"
 		:warning="warnings.identity"
 		/>
 
@@ -33,7 +33,7 @@
 		<SelectInput
 		v-show="usrInfo.identity == 1"
 		icon="symbols/p-dorm.svg"
-		placeholder="您的宿舍楼？"
+		placeholder="宿舍楼 dorm hall"
 		@change="e => { usrInfo.hall = e; usrInfo.room = '-1'; warnings.hall = '' }"
 		:options="halls"
 		:warning="warnings.hall"
@@ -42,7 +42,7 @@
 		<!-- ask for dorm room from students -->
 		<SelectInput
 		v-show="usrInfo.identity == 1 && usrInfo.hall != -1"
-		placeholder="您的房间？"
+		placeholder="房间 dorm room"
 		icon="symbols/p-room.svg"
 		@change="e => { usrInfo.room = e; warnings.room = '' }"
 		:options="rooms[halls[usrInfo.hall]]"
@@ -50,7 +50,7 @@
 		/>
 
 		<!-- submit button -->
-		<view class="btn" style="transform: translateY(50rpx);" @click="register">注册</view>
+		<view class="btn" style="transform: translateY(50rpx);" @click="register">注册 register</view>
 
 	</view>
 </template>
@@ -162,32 +162,32 @@
 				}
 				
 				if (this.usrInfo.name.split(' ').join('').length == 0) {
-					this.warnings.name = '请输入您的真实姓名'; valid = false;
+					this.warnings.name = '请输入您的真实姓名<br>please enter a recognizable name'; valid = false;
 				}
 				
 				if (this.usrInfo.identity == -1) {
-					this.warnings.identity = '请告诉我们您的身份'; valid = false;
+					this.warnings.identity = '请告诉我们您的身份<br>please tell us your identity'; valid = false;
 				}
 				
 				if (this.usrInfo.identity == 0) {
 					let validkey = await this.validTeacherKey()
 					if (!validkey) {
-						this.warnings.teacherKey = 'teacherkey错误'; valid = false;
+						this.warnings.teacherKey = 'teacherkey错误<br> wrong teacherkey'; valid = false;
 					}
 				}
 				
 				if (this.usrInfo.identity == 1) {
 					if (this.usrInfo.hall == -1) {
-						this.warnings.hall = '请选择宿舍'; valid = false;
+						this.warnings.hall = '请选择宿舍<br>please select a dorm building'; valid = false;
 					}
 					else if (this.usrInfo.room == -1) {
-						this.warnings.room = '请选择房间'; valid = false;
+						this.warnings.room = '请选择房间<br>please select a dorm room'; valid = false;
 					}
 				}
 
 				let duplicates = await this.existsDuplicates()
 				if (duplicates) {
-					this.warnings.name = '名字重复了...换一个试试吧'; valid = false;
+					this.warnings.name = '名字重复了...换一个试试吧<br>another person took your name'; valid = false;
 				}
 				
 				return valid;
@@ -253,6 +253,7 @@
 																key: "me",
 																data: res.result.me
 															})
+
 															uni.reLaunch({
 																url: '/pages/menu/menu'
 															});

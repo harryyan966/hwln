@@ -1,18 +1,18 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title acc3">创建班级</view>
+		<view class="title acc3">创建班级<br>create class</view>
 
 		<view class="container">
 			<!-- get name of class to be created -->
 			<TextInput
 			icon="symbols/a3-class.svg"
-			placeholder="班级名称"
+			placeholder="班级名称 class name"
 			@change="e => { cname = e; cnamewarn = '' }"
 			:warning="cnamewarn"
 			/>
 
-			<view class="btn acc3" @click="create">创建</view>
+			<view class="btn acc3" @click="create">创建 create</view>
 		</view>
 	</view>
 </template>
@@ -31,13 +31,13 @@
 			create() {
 				// sanity check
 				if (this.cname.split(" ").join("").length == 0) {
-					this.cnamewarn = "班级名称不能为空"
+					this.cnamewarn = "班级名称不能为空<br>please give a name to the class"
 					return
 				}
 
 				// confirm
 				uni.showModal({
-		            title: '确认创建班级？',
+		            title: '确认创建班级？do you want to create the class?',
 		            content: this.cname,
 		            success: (res) => {
 		              	if (res.confirm) {
@@ -61,7 +61,7 @@
 			     						return
 				                	}
 				                	if (res.result.err == "duplicate class name") {
-				                		this.cnamewarn = "名字重复了，换一个试试吧"
+				                		this.cnamewarn = "名字重复了，换一个试试吧<br>another class took your name"
 				                		return
 				                	}
 				                	if (res.result.err) {

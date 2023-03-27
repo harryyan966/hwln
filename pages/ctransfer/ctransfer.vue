@@ -1,19 +1,19 @@
 <template>
 	<view>
 		<back></back>
-		<view class="title acc3">转让或删除{{ cname }}</view>
+		<view class="title acc3">转让或删除{{ cname }}<br>transfer or remove {{ cname }}</view>
 
 		<view class="container">
 			<SelectInput
 		    icon="symbols/a3-teacher.svg"
-		    placeholder="转让对象"
+		    placeholder="转让对象 transfer to whom?"
 		    color="a3"
 		    @change="e => { selected = e; warning = '' }"
 		    :options="teachers"
 		    :warning="warning"
 		    />
 
-			<view class="btn acc3" @click="act">{{ q }}班级</view>
+			<view class="btn acc3" @click="act" v-html="q"></view>
 		</view>
 	</view>
 </template>
@@ -52,7 +52,7 @@
                 	}
 					this.teachers = res.result.data
 					this.teachers = this.teachers.filter( e => e != curr )
-					this.teachers.push(["「删除班级！」"])
+					this.teachers.push(["「删除班级！DELETE」"])
 				}
 			})
 		},
@@ -117,7 +117,7 @@
 			q() {
 				if (!this.teachers)
 					return "转让"
-				return this.selected < this.teachers.length - 1 ? "转让" : "删除"
+				return this.selected < this.teachers.length - 1 ? "转让班级<br>transfer class" : "删除班级<br>delete class"
 			}
 		}
 	}

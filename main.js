@@ -19,3 +19,6 @@ export function createApp() {
   }
 }
 // #endif
+
+import share from './utils/wxShare.js'
+Vue.mixin(share)

@@ -1,6 +1,63 @@
 // store the JWT here
 let token;
 
+
+// CREDITS: https://blog.csdn.net/AP0906424/article/details/121556612
+
+let isShowLoading = false;
+let isShowToast = false;
+const {
+  showLoading,
+  hideLoading,
+  showToast,
+  hideToast
+} = wx;
+Object.defineProperty(wx, 'showLoading', {
+  configurable: true, // 是否可以配置
+  enumerable: true, // 是否可迭代
+  writable: true, // 是否可重写
+  value(...param) {
+    if (isShowToast) { // Toast优先级更高
+      return;
+    }
+    isShowLoading = true;
+    return showLoading.apply(this, param); // 原样移交函数参数和this
+  }
+});
+Object.defineProperty(wx, 'hideLoading', {
+  configurable: true, // 是否可以配置
+  enumerable: true, // 是否可迭代
+  writable: true, // 是否可重写
+  value(...param) {
+    if (isShowToast) { // Toast优先级更高
+      return;
+    }
+    isShowLoading = false;
+    return hideLoading.apply(this, param); // 原样移交函数参数和this
+  }
+});
+Object.defineProperty(wx, 'showToast', {
+  configurable: true, // 是否可以配置
+  enumerable: true, // 是否可迭代
+  writable: true, // 是否可重写
+  value(...param) {
+    if (isShowLoading) { // Toast优先级更高
+      wx.hideLoading();
+    }
+    isShowToast = true;
+    return showToast.apply(this, param); // 原样移交函数参数和this
+  }
+});
+Object.defineProperty(wx, 'hideToast', {
+  configurable: true, // 是否可以配置
+  enumerable: true, // 是否可迭代
+  writable: true, // 是否可重写
+  value(...param) {
+    isShowToast = false;
+    return hideToast.apply(this, param); // 原样移交函数参数和this
+  }
+});
+
 function call(option) {
   return new Promise((resolve, reject) => {
     // catch null data
@@ -22,6 +79,8 @@ function call(option) {
       data: option.data,
 
       success(res) {
+        uni.hideLoading();
+
         // storing the token if the function called returned a token for us
         if (res.result.token) {
           token = res.result.token;
@@ -35,17 +94,17 @@ function call(option) {
         }
         // return result
         resolve(res);
-        uni.hideLoading();
       },
 
       fail(err) {
+        uni.hideLoading();
+
         // retain original behavior
         if (option.fail) {
           option.fail(err);
         }
         // return error
         resolve(err);
-        uni.hideLoading();
       },
 
       complete() {

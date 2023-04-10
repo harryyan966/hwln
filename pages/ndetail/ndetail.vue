@@ -50,6 +50,9 @@
 			<view class="btn content">{{ note.homeroom }}老师</view>
 		</view>
 
+		<view class="btn warning" @click="delnote" v-if="involved" style="margin: 50rpx auto">删除假条</view>
+		<!-- placeholder -->
+		<view style="height: 50rpx"></view>
 	</view>
 </template>
 
@@ -59,20 +62,24 @@
 	export default {
 		data() {
 			return {
-				note: undefined
+				note: undefined,
+				name: undefined
 			}
 		},
 
 		onLoad(res) {
 			this.note = JSON.parse(res.note)
+			let data = uni.getStorageSync("me")
+			this.name = data.name
 		},
 
 		methods: {
 			sign(type) {
 				cloudApi.call({
-					name: "sign",
+					name: "nmanage",
 					data: {
 						id: this.note._id,
+						query: "sign",
 						type: type
 					},
 					success: (res) => {
@@ -118,6 +125,51 @@
 						if (type == "class") this.note.sclass = !this.note.sclass
 					}
 				})
+			}, 
+
+			delnote() {
+				cloudApi.call({
+					name: "nmanage",
+					data: {
+						id: this.note._id,
+						query: "del"
+					},
+					success: (res) => {
+						if (res.result.err == "user not logged in") {
+							uni.navigateTo({
+    							url: "/pages/index/index"
+     						})
+     						uni.showToast({
+								icon: "none",
+								duration: 1500,
+								title: "您尚未登录"
+							})
+     						return
+						}
+						uni.navigateBack({
+							delta: 1
+						})
+					},
+					complete: (res) => {
+						uni.hideLoading()
+						uni.showToast({
+							icon: "success",
+							title: "删除成功"
+						})
+					}
+				})
+			}
+		},
+
+		computed: {
+			involved() {
+				console.log(this.note)
+				console.log(this.name)
+
+				return this.note ? (this.note.students.includes(this.name)
+				|| this.note.supervisor == this.name
+				|| this.note.homeroom == this.name
+				|| this.note.writer == this.name) : false
 			}
 		}
 	}

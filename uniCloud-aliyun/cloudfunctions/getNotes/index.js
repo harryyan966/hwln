@@ -12,10 +12,9 @@ exports.main = async (event, context) => {
 	old.setTime(old.getTime() - 1000*60*60*24 * 1);
 
 	// remove old notes
-	for (let note of notes) {
-		// too old
-		if (new Date(note.date) <= old) await db.collection("xNotes").doc(note._id).remove();
-	}
+	for (let note of notes)
+		if (new Date(note.date) <= old)
+			await db.collection("xNotes").doc(note._id).remove();
 
 	notes = notes.filter( note => (new Date(note.date) > old) )
 
@@ -47,7 +46,7 @@ exports.main = async (event, context) => {
 		let students = (await db.collection("students").get()).data
 		let me = students.find( e => e.openid == openid )
 		if (!me) return { err: "user does not exist" }
-		notes = notes.filter( note => note.students.includes(me.name) )
+		notes = notes.filter( note => note.students.includes(me.name) || note.writer == me.name )
 		notes = notes.filter( note => note.students = note.students.join("，") )
 	}
 

@@ -83,6 +83,8 @@
 					'supervisor': '',
 					'message': ''
 				},
+
+				writer: undefined
 			}
 		},
 
@@ -90,6 +92,7 @@
 			uni.getStorage({
 				key: "me",
 				success: (res) => {
+					this.writer = res.data.name
 					cloudApi.call({
 						name: "getClasses",
 						data: {
@@ -138,7 +141,7 @@
 			this.dates = [];
 			let now = new Date();
 			// check if we should include today
-			if (now.getHours() < 12) {
+			if (now.getHours() < 13) {
 				this.dates.push(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} (${DAYS[now.getDay()]})`);
 			}
 			// add a date until there are five available dates
@@ -175,8 +178,8 @@
 				if (this.noteInfo.date != -1) {
 					chosenDate = new Date(this.dates[this.noteInfo.date].split(' ')[0]);
 					// if it is already afternoon but the date chosen is still today...
-					if (now.getHours() > 12 && chosenDate.getDate() == now.getDate()) {
-						this.warnings.date = '谈笑间已经过了十二点，刷新下页面吧<br>special issue, please refresh the page'; valid = false;
+					if (now.getHours() > 13 && chosenDate.getDate() == now.getDate()) {
+						this.warnings.date = '谈笑间已经过了一点，刷新下页面吧<br>special issue, please refresh the page'; valid = false;
 					}
 				}
 
@@ -221,7 +224,8 @@
 						supervisor: this.teachers[this.noteInfo.supervisor].slice(0,-2),
 						message: this.noteInfo.message,
 						ssuper: false,
-						sclass: false
+						sclass: false,
+						writer: this.writer
 					},
 					success: (res) => {
 						if (res.result.err) {

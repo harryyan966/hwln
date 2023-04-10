@@ -17,7 +17,7 @@
 				<img src="/static/icons/symbols/a2-people.svg" class="dimg">
 				<view class="dtext">请假学生 students</view>
 			</view>
-			<view class="btn content">{{ note.students }}</view>
+			<view class="btn content">{{ note ? note.students.join("，") : "" }}</view>
 
 			<view class="description">
 				<img src="/static/icons/symbols/a2-date.svg" class="dimg">

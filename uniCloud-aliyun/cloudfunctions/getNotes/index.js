@@ -40,14 +40,13 @@ exports.main = async (event, context) => {
 		let teachers = (await db.collection("teachers").get()).data
 		let me = teachers.find( e => e.openid == openid )
 		if (!me) return { err: "user does not exist" }
-		notes = notes.filter( note => note.students = note.students.join("，") )
+		// notes = notes.filter( note => note.students = note.students.join("，") )
 	}
 	else if (event.identity == "student") {
 		let students = (await db.collection("students").get()).data
 		let me = students.find( e => e.openid == openid )
 		if (!me) return { err: "user does not exist" }
 		notes = notes.filter( note => note.students.includes(me.name) || note.writer == me.name )
-		notes = notes.filter( note => note.students = note.students.join("，") )
 	}
 
 	// sort notes from oldest to newest

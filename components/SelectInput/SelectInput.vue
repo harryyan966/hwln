@@ -53,8 +53,8 @@
 		width: 410rpx;
 		padding: 15rpx;
 		border-radius: 10rpx;
-		box-shadow: 8rpx 8rpx 8rpx $shadow,
-		            -8rpx -8rpx 8rpx white;
+    	box-shadow: $shadow-delta $shadow-delta $shadow-size $shadow,
+            (-$shadow-delta) (-$shadow-delta) $shadow-size white;
 		// font-weight: lighter;
 		font-size: 40rpx;
 	}

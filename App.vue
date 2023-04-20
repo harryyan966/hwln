@@ -16,6 +16,7 @@
 	@import '@/static/global.scss';
 
 	body {
-		background-color: $gray;
-	}
+    background-color: $gray;
+    font-family: "Product Sans", "Arial" !important;
+}
 </style>

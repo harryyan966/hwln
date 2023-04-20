@@ -32,8 +32,8 @@
 	}
 	
 	.option {
-		box-shadow: 8rpx 8rpx 8rpx $shadow,
-		            -8rpx -8rpx 8rpx white;
+    	box-shadow: $shadow-delta $shadow-delta $shadow-size $shadow,
+            (-$shadow-delta) (-$shadow-delta) $shadow-size white;
 		// background-color: $accent-1;
 		
 		border-radius: 20rpx;
